@@ -1,57 +1,86 @@
-# Real-Time Chat Application (React + FastAPI)
+# 💬 Real-Time Chat Application
 
-Register, log in, see who is online, and chat one-to-one in real time.
+A simple app for creating an account and chatting with other users in real time.
 
-## What is inside
+## ✨ Features
 
-| Requirement | Where |
-|---|---|
-| Register / Login / JWT | `backend/app/routers/auth.py`, `security.py` |
-| Protected APIs | `backend/app/deps.py` |
-| View + search users, online status, profile | `backend/app/routers/users.py`, `frontend/src/pages/Profile.jsx` |
-| Real-time chat (WebSocket), typing, timestamps, delivered/seen | `backend/app/routers/chat_ws.py`, `frontend/src/pages/Chat.jsx` |
-| JWT check on socket | `chat_ws.py` (`?token=` is verified before accepting) |
-| Private rooms | each message has `room_id = "<smallerId>_<biggerId>"` |
-| Message + User tables | `backend/app/models.py` |
-| Global exception handling | `backend/app/main.py` |
-| Protected routing | `frontend/src/components/ProtectedRoute.jsx` |
-| WhatsApp-like responsive UI, loaders, errors | `frontend/src/styles.css`, `components/` |
+- Sign up, log in, and edit your profile
+- Find users and see who is online
+- Chat live with typing and read status
 
-## Run the backend (Terminal 1)
+## 🧰 Tech Stack
 
-```bash
+- **Frontend:** React and Vite
+- **Backend:** Python and FastAPI
+- **Database:** SQLite by default
+- **Live chat:** WebSockets
+
+## 🗂️ Project Structure
+
+```text
+backend/   FastAPI server and database
+frontend/  React web app
+docker-compose.yml  Docker services
+```
+
+## ⚙️ Backend Setup
+
+In PowerShell, run:
+
+```powershell
 cd backend
-python -m venv venv
-venv\Scripts\activate          # Windows
-# source venv/bin/activate     # Mac / Linux
-pip install -r requirements.txt
-cp .env.example .env           # (Windows: copy .env.example .env)
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
 uvicorn app.main:app --reload
 ```
-API docs: http://localhost:8000/docs
 
-## Run the frontend (Terminal 2)
+The API runs at `http://localhost:8000`. The app uses SQLite by default.
 
-```bash
+## 🎨 Frontend Setup
+
+In a second terminal, run:
+
+```powershell
 cd frontend
 npm install
-cp .env.example .env           # (Windows: copy .env.example .env)
+Copy-Item .env.example .env
 npm run dev
 ```
-Open http://localhost:5173
 
-## How to test
+Open `http://localhost:5173`. Start the backend first.
 
-1. Open the app in a normal window and register user A.
-2. Open an **incognito window** and register user B.
-3. Click each other's name and chat. Try typing (you will see "typing…"), and watch ✓ / ✓✓ / blue ✓✓.
+## 🔐 Authentication Flow
 
-## Use MySQL or PostgreSQL
+Sign up or log in. The server returns a secure token that the app uses to authorize API and chat connections.
 
-Change `DATABASE_URL` in `backend/.env` (examples are inside `.env.example`), install the driver
-(`pip install pymysql` or `pip install psycopg2-binary`), create an empty database, and restart. Tables are created automatically.
+## 💬 Real-Time Chat
 
-## WebSocket messages (quick reference)
+Messages and typing status update live. Chat history is saved, and offline messages appear when the recipient returns.
 
-Browser -> server: `message`, `typing`, `seen`
-Server -> browser: `message`, `typing`, `seen`, `delivered`, `presence`, `error`
+## 🐳 Run with Docker Compose (Optional)
+
+With Docker Desktop running, open a terminal in the project folder and run:
+
+```powershell
+docker compose up --build -d
+```
+
+Open `http://localhost:3000`. To stop the app:
+
+```powershell
+docker compose down
+```
+
+Use the backend and frontend setup above if you prefer running locally without Docker.
+
+## 📝 Notes
+
+- Create two accounts in separate browsers to test chatting.
+- Keep secret keys private and change the development key before deployment.
+
+## ✍️ Author Information
+
+- **Author:** Pradip Pachapol
+- **GitHub:** [@PradipPach](https://github.com/PradipPach)
